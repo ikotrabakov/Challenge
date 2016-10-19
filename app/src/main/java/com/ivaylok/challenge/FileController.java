@@ -27,7 +27,7 @@ public class FileController {
     }
 
     private void populateWithFiles() {
-        FileModel model = new FileModel("Game of Thrones", "isFolder", FileModel.FileType.movie, false, true);
+        FileModel model = new FileModel("Game of Thrones", "isFolder", FileModel.FileType.image, false, true);
 
         for (int i = 0; i < 20; i++) {
             mFiles.add(model);

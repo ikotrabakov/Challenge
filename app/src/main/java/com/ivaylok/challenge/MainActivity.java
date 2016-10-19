@@ -21,15 +21,29 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private FileAdapter mAdapter;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+        FileController controller = FileController.get(getBaseContext());
+        List<FileModel> fileModels = controller.getFiles();
+
+        mAdapter = new FileAdapter(fileModels);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
     private class FileHolder extends RecyclerView.ViewHolder {
 
-        ImageView mImage;
-        TextView mTitle;
-        TextView mDesc;
-        FileModel mFile;
+        private ImageView mImage;
+        private TextView mTitle;
+        private TextView mDesc;
+        private FileModel mFile;
 
-        ImageView mTopColor;
-        ImageView mBottomColor;
+        private ImageView mTopColor;
+        private ImageView mBottomColor;
 
         public FileHolder(View itemView) {
             super(itemView);
@@ -57,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(View view) {
                                     Log.d("TAG", "You just clicked on Favorite");
+                                    dialog.dismiss();
                                 }
                             });
 
@@ -64,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(View view) {
                                     Log.d("TAG", "You just clicked on Permalink");
+                                    dialog.dismiss();
                                 }
                             });
 
@@ -71,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(View view) {
                                     Log.d("TAG", "You just clicked on Delete");
+                                    dialog.dismiss();
                                 }
                             });
 
@@ -90,8 +107,7 @@ public class MainActivity extends AppCompatActivity {
             if(mFile == null)
             {
                 Log.d("TAG","Got a null file object");
-            }else
-            {
+            } else {
 
                 mTitle.setText(mFile.getFilename());
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM dd, yyyy");
@@ -109,6 +125,19 @@ public class MainActivity extends AppCompatActivity {
                     mBottomColor.setColorFilter(Color.YELLOW);
                 }
 
+                switch (mFile.getFileType()) {
+                    case image: mImage.setImageResource(R.drawable.ic_photo_black_48dp);
+                        break;
+                    case pdf: mImage.setImageResource(R.drawable.ic_picture_as_pdf_black_48dp);
+                        break;
+                    case movie: mImage.setImageResource(R.drawable.ic_local_movies_black_48dp);
+                        break;
+                    case music: mImage.setImageResource(R.drawable.ic_music_note_black_48dp);
+                        break;
+                    default:
+                        mImage.setImageResource(R.mipmap.ic_launcher);
+                        break;
+                }
             }
         }
     }
@@ -146,17 +175,5 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
-        FileController controller = FileController.get(getBaseContext());
-        List<FileModel> fileModels = controller.getFiles();
-
-        mAdapter = new FileAdapter(fileModels);
-        mRecyclerView.setAdapter(mAdapter);
-    }
 }

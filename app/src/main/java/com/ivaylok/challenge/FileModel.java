@@ -22,21 +22,6 @@ public class FileModel {
         this.isOrange = isOrange;
         this.isBlue = isBlue;
         modDate = new Date(System.currentTimeMillis());
-
-        switch (fileType) {
-            case image: //set image as image icon
-                break;
-            case pdf: //set image as pdf icon
-                break;
-            case movie: //set image as movie icon
-                break;
-            case music: //set image as music icon
-                break;
-            default:
-                //default image
-        }
-
-
     }
 
     public enum FileType {
