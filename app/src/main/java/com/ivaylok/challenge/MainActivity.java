@@ -1,10 +1,7 @@
 package com.ivaylok.challenge;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.graphics.Color;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -42,28 +39,49 @@ public class MainActivity extends AppCompatActivity {
             mTopColor = (ImageView) itemView.findViewById(R.id.topColor);
             mBottomColor = (ImageView) itemView.findViewById(R.id.bottomColor);
 
+            mRecyclerView.addOnItemTouchListener(
+                    new RecyclerItemClickListener(getBaseContext(), mRecyclerView , new RecyclerItemClickListener.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position) {
 
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//
-//                    final Dialog dialog = new Dialog(getBaseContext());
-//                    dialog.setContentView(R.layout.dialog);
-//                    dialog.setTitle("Actions");
-//                    dialog.show();
-//
-//                    TextView mFavorite = (TextView) findViewById(R.id.tvFavorite);
-//                    TextView mPermalink = (TextView) findViewById(R.id.tvPermalink);
-//                    TextView mDelete = (TextView) findViewById(R.id.tvDelete);
-//
-//                    mFavorite.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View view) {
-//                            Log.d("TAG", "You just clicked on Favorite");
-//                        }
-//                    });
-//                }
-//            });
+                            final Dialog dialog = new Dialog(MainActivity.this);
+                            dialog.setContentView(R.layout.dialog);
+                            dialog.setTitle("Actions");
+                            dialog.show();
+
+                            TextView mFavorite = (TextView) dialog.findViewById(R.id.tvFavorite);
+                            TextView mPermalink = (TextView) dialog.findViewById(R.id.tvPermalink);
+                            TextView mDelete = (TextView) dialog.findViewById(R.id.tvDelete);
+
+                            mFavorite.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Log.d("TAG", "You just clicked on Favorite");
+                                }
+                            });
+
+                            mPermalink.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Log.d("TAG", "You just clicked on Permalink");
+                                }
+                            });
+
+                            mDelete.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Log.d("TAG", "You just clicked on Delete");
+                                }
+                            });
+
+                        }
+
+                        @Override
+                        public void onLongItemClick(View view, int position) {
+
+                        }
+
+                    }));
         }
 
         public void bindFile(FileModel fileModel)
