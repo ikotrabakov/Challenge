@@ -11,14 +11,14 @@ import java.util.List;
 
 public class FileController {
 
-    private static FileController sControler;
+    private static FileController sController;
     private List<FileModel> mFiles;
 
     public static FileController get(Context context) {
-        if(sControler == null) {
-            sControler = new FileController(context);
+        if(sController == null) {
+            sController = new FileController(context);
         }
-        return sControler;
+        return sController;
     }
 
     private FileController(Context context){
