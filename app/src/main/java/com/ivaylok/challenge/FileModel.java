@@ -1,27 +1,35 @@
 package com.ivaylok.challenge;
 
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
  * Created by smn on 10/19/16.
  */
 
-public class FileModel {
+public class FileModel implements Serializable{
 
     private String filename;
     private String isFolder;
-    private Date modDate;
+    private String modDate;
     private FileType fileType;
     private boolean isOrange;
     private boolean isBlue;
 
-    public FileModel(String filename, String isFolder, FileType fileType, boolean isOrange, boolean isBlue) {
+    public FileModel(){};
+
+    public FileModel(String filename, String isFolder, String modDate, FileType fileType, boolean isOrange, boolean isBlue) {
         this.filename = filename;
         this.isFolder = isFolder;
         this.fileType = fileType;
         this.isOrange = isOrange;
         this.isBlue = isBlue;
-        modDate = new Date(System.currentTimeMillis());
+        this.modDate = modDate;
+//        Date date = new Date(System.currentTimeMillis());
+////        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM dd, yyyy");
+//        modDate = simpleDateFormat.format(date);
+
     }
 
     public enum FileType {
@@ -35,7 +43,9 @@ public class FileModel {
         return filename;
     }
 
-    public Date getModDate() {
+    public String getIsFolder() { return isFolder; }
+
+    public String getModDate() {
         return modDate;
     }
 
@@ -49,5 +59,29 @@ public class FileModel {
 
     public boolean isBlue() {
         return isBlue;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public void setIsFolder(String isFolder) {
+        this.isFolder = isFolder;
+    }
+
+    public void setModDate(String modDate) {
+        this.modDate = modDate;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = FileType.valueOf(fileType);
+    }
+
+    public void setOrange(boolean orange) {
+        isOrange = orange;
+    }
+
+    public void setBlue(boolean blue) {
+        isBlue = blue;
     }
 }

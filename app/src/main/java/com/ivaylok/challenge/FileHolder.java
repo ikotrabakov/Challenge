@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
 
 /**
  * Created by smn on 10/19/16.
@@ -31,7 +30,6 @@ public class FileHolder extends RecyclerView.ViewHolder {
         mTopColor = (ImageView) itemView.findViewById(R.id.topColor);
         mBottomColor = (ImageView) itemView.findViewById(R.id.bottomColor);
 
-
     }
 
     public void bindFile(FileModel fileModel)
@@ -43,8 +41,8 @@ public class FileHolder extends RecyclerView.ViewHolder {
         } else {
 
             mTitle.setText(mFile.getFilename());
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM dd, yyyy");
-            mDesc.setText(String.valueOf("modivied " + simpleDateFormat.format(mFile.getModDate())));
+
+            mDesc.setText(String.valueOf("modified " + mFile.getModDate()));
 
             if (mFile.isBlue() && mFile.isOrange()) {
                 mTopColor.setColorFilter(Color.BLUE);

@@ -16,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private FileAdapter mAdapter;
 
+    private DatabaseHelper mDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
         mAdapter = new FileAdapter(fileModels);
         mRecyclerView.setAdapter(mAdapter);
+        mDatabase = DatabaseHelper.getInstance(getApplicationContext());
 
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getBaseContext(), mRecyclerView , new RecyclerItemClickListener.OnItemClickListener() {
