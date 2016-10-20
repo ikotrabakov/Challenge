@@ -83,5 +83,15 @@ public class FileModel implements Serializable{
         isBlue = blue;
     }
 
-
+    @Override
+    public String toString() {
+        return "FileModel{" +
+                "filename='" + filename + '\'' +
+                ", isFolder='" + isFolder + '\'' +
+                ", modDate='" + modDate + '\'' +
+                ", fileType=" + fileType +
+                ", isOrange=" + isOrange +
+                ", isBlue=" + isBlue +
+                '}';
+    }
 }

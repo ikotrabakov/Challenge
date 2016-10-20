@@ -44,16 +44,19 @@ public class FileHolder extends RecyclerView.ViewHolder {
 
             mDesc.setText(String.valueOf("modified " + mFile.getModDate()));
 
-            if (mFile.isBlue() && mFile.isOrange()) {
-                mTopColor.setColorFilter(Color.BLUE);
-                mBottomColor.setColorFilter(Color.YELLOW);
-            } else if (mFile.isBlue()) {
-                mTopColor.setColorFilter(Color.BLUE);
-                mBottomColor.setColorFilter(Color.BLUE);
-            }
-            else {
-                mTopColor.setColorFilter(Color.YELLOW);
-                mBottomColor.setColorFilter(Color.YELLOW);
+            String blue = "#448AFF";
+            String orange = "#FF5722";
+
+            if (mFile.isBlue()) {
+                mTopColor.setBackgroundColor(Color.parseColor(blue));
+                if (mFile.isOrange())
+                    mBottomColor.setBackgroundColor(Color.parseColor(orange));
+                else mBottomColor.setBackgroundColor(Color.parseColor(blue));
+            } else {
+                if (mFile.isOrange()) {
+                    mTopColor.setBackgroundColor(Color.parseColor(orange));
+                    mBottomColor.setBackgroundColor(Color.parseColor(orange));
+                }
             }
 
             switch (mFile.getFileType()) {

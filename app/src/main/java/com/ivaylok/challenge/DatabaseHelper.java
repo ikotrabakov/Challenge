@@ -117,6 +117,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     fileModel.setOrange(orange);
                     blue = cursor.getInt(cursor.getColumnIndex(BLUE)) > 0;
                     fileModel.setBlue(blue);
+                    Log.d(TAG, "getAllData: " + fileModel.toString());
 
                     modelList.add(fileModel);
 
