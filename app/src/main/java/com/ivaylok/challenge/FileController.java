@@ -27,10 +27,10 @@ public class FileController {
     private FileController(Context context){
         mDatabase = DatabaseHelper.getInstance(context);
         mFiles = new ArrayList<>();
-        mFiles = getFiles();
+        mFiles = getFiles(DatabaseHelper.SELECT_ALL_DATA_QUERY);
     }
 
-    public List<FileModel> getFiles() { return mFiles = mDatabase.getAllData(); }
+    public List<FileModel> getFiles(String query) { return mFiles = mDatabase.getAllData(query); }
 
 
     public void addFilesToDatabase(FileModel model) {

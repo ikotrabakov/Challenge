@@ -1,17 +1,23 @@
 package com.ivaylok.challenge;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddActivity extends AppCompatActivity {
 
@@ -53,6 +59,40 @@ public class AddActivity extends AppCompatActivity {
         });
 
         setSwitches();
+        setDialog();
+    }
+
+    private void setDialog() {
+
+        List<FileModel> modelList = DatabaseHelper.getInstance(AddActivity.this).getAllData(DatabaseHelper.SELECT_ALL_FOLDERS_QUERY);
+        final List<String> folderList = new ArrayList<>();
+        for (int i = 0; i < modelList.size(); i++) {
+            folderList.add(modelList.get(i).getFilename());
+        }
+        final CharSequence[] folderNames = folderList.toArray(new String[folderList.size()]);
+
+        mFolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(AddActivity.this)
+                        .setTitle(getString(R.string.app_name))
+                        .setSingleChoiceItems(folderNames, 0, null)
+                        .setPositiveButton(R.string.txt_ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                                mFolder.setText(folderList.get(selectedPosition));
+
+                            }
+                        })
+                        .setNegativeButton(R.string.txt_cancel, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+
+                            }
+                        })
+                        .show();
+            }
+        });
     }
 
     private void setSwitches() {

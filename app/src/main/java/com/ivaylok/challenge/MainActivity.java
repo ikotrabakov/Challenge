@@ -17,6 +17,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+
+    public static String CURRENT_QUERY = DatabaseHelper.SELECT_ALL_FILES_IN_FOLDER;
+
     private RecyclerView mRecyclerView;
     private FileAdapter mAdapter;
     private List<FileModel> fileModels;
@@ -32,7 +35,8 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
         controller = FileController.get(getBaseContext());
-        fileModels = controller.getFiles();
+
+        fileModels = controller.getFiles(CURRENT_QUERY);
 
         mAdapter = new FileAdapter(fileModels);
         mRecyclerView.setAdapter(mAdapter);
@@ -89,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        fileModels = controller.getFiles();
+        fileModels = controller.getFiles(CURRENT_QUERY);
         mAdapter.notifyDataSetChanged();
         mRecyclerView.setAdapter(mAdapter);
     }

@@ -29,6 +29,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String BLUE = "blue";
     private static final String TAG = DatabaseHelper.class.getSimpleName();
 
+    public static String ACTION_FOLDER = "";
+
+    public static final String SELECT_ALL_FOLDERS_QUERY = "SELECT * FROM " + TABLE_NAME + " WHERE " + TYPE + "='folder'";
+
+    public static final String SELECT_ALL_DATA_QUERY = "SELECT * FROM " + TABLE_NAME;
+
+    public static final String SELECT_ALL_FILES_IN_FOLDER = "SELECT * FROM " + TABLE_NAME + " WHERE " + FOLDER + "='" + ACTION_FOLDER+  "'";
+
     private static DatabaseHelper mDbHelper;
 
     public static synchronized DatabaseHelper getInstance(Context context) {
@@ -94,14 +102,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public List<FileModel> getAllData() {
+    public List<FileModel> getAllData(String query) {
 
         List<FileModel> modelList = new ArrayList<>();
 
-        String FILE_DATA_SELECT_QUERY = "SELECT * FROM " + TABLE_NAME;
-
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(FILE_DATA_SELECT_QUERY, null);
+        Cursor cursor = db.rawQuery(query, null);
 
         try {
             if (cursor.moveToFirst()) {
