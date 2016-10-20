@@ -46,8 +46,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
-//        sqLiteDatabase.execSQL("DROP TABLE " + TABLE_NAME);
-
         String CREATE_FILE_TABLE = "CREATE TABLE " + TABLE_NAME +
                 "(" +
                 _ID + " INTEGER PRIMARY KEY ," +
@@ -58,7 +56,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 ORANGE + " BOOLEAN," +
                 BLUE + " BOOLEAN" +
                 ")";
-        Log.d(TAG, "onCreate: " + CREATE_FILE_TABLE);
         sqLiteDatabase.execSQL(CREATE_FILE_TABLE);
     }
 
@@ -72,7 +69,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void inserFile(FileModel fileModel) {
+    public void insertFile(FileModel fileModel) {
         SQLiteDatabase db = getWritableDatabase();
 
         db.beginTransaction();

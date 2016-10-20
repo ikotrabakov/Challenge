@@ -1,11 +1,14 @@
 package com.ivaylok.challenge;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,8 +16,11 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
     private RecyclerView mRecyclerView;
     private FileAdapter mAdapter;
+    private List<FileModel> fileModels;
+    private FileController controller;
 
     private DatabaseHelper mDatabase;
 
@@ -25,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
-        FileController controller = FileController.get(getBaseContext());
-        List<FileModel> fileModels = controller.getFiles();
+        controller = FileController.get(getBaseContext());
+        fileModels = controller.getFiles();
 
         mAdapter = new FileAdapter(fileModels);
         mRecyclerView.setAdapter(mAdapter);
@@ -78,5 +84,33 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                 }));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fileModels = controller.getFiles();
+        mAdapter.notifyDataSetChanged();
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        if (id == R.id.action_add) {
+            startActivity(new Intent(this, AddActivity.class));
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

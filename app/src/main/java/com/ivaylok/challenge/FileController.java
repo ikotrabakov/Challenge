@@ -27,27 +27,19 @@ public class FileController {
     private FileController(Context context){
         mDatabase = DatabaseHelper.getInstance(context);
         mFiles = new ArrayList<>();
-        addFilesToDatabase();
-        populateWithFiles();
+        mFiles = getFiles();
     }
 
-    private void populateWithFiles() {
-
-        mFiles = mDatabase.getAllData();
-
-    }
-
-    public List<FileModel> getFiles() { return mFiles; }
+    public List<FileModel> getFiles() { return mFiles = mDatabase.getAllData(); }
 
 
-    private void addFilesToDatabase() {
+    public void addFilesToDatabase(FileModel model) {
 
         Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM dd, yyyy");
         String mDate = simpleDateFormat.format(date);
-//        mDatabase.inserFile(new FileModel("Foo Fighters", "isFolder", mDate, FileModel.FileType.music, true, true));
-//        mDatabase.inserFile(new FileModel("Lord of The Rings", "isFolder", mDate, FileModel.FileType.movie, false, true));
-        mDatabase.inserFile(new FileModel("Image", "isFolder", mDate, FileModel.FileType.image, true, false));
+        model.setModDate(mDate);
+        mDatabase.insertFile(model);
     }
 
 

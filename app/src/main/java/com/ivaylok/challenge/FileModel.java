@@ -1,8 +1,6 @@
 package com.ivaylok.challenge;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Created by smn on 10/19/16.
@@ -84,4 +82,6 @@ public class FileModel implements Serializable{
     public void setBlue(boolean blue) {
         isBlue = blue;
     }
+
+
 }
