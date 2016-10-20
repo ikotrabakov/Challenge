@@ -32,7 +32,7 @@ public class FileModel implements Serializable{
 
     public enum FileType {
         image,
-        pdf,
+        folder,
         movie,
         music;
     }

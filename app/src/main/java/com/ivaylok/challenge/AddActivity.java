@@ -105,9 +105,9 @@ public class AddActivity extends AppCompatActivity {
                 if(checked)
                     mModel.setFileType("music");
                     break;
-            case R.id.rbAddPdf:
+            case R.id.rbFolder:
                 if(checked)
-                    mModel.setFileType("pdf");
+                    mModel.setFileType("folder");
                     break;
             default:
                 break;

@@ -53,11 +53,11 @@
             android:checked="true"
             android:text="Image"
             android:onClick="onRadioButtonClicked"/>
-        <RadioButton android:id="@+id/rbAddPdf"
+        <RadioButton android:id="@+id/rbFolder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Pdf"
+            android:text="Folder"
             android:onClick="onRadioButtonClicked"/>
         <RadioButton
             android:id="@+id/rbAddMovie"

@@ -60,13 +60,13 @@ public class FileHolder extends RecyclerView.ViewHolder {
             }
 
             switch (mFile.getFileType()) {
-                case image: mImage.setImageResource(R.drawable.ic_photo_black_48dp);
+                case image: mImage.setImageResource(R.drawable.ic_image);
                     break;
-                case pdf: mImage.setImageResource(R.drawable.ic_picture_as_pdf_black_48dp);
+                case folder: mImage.setImageResource(R.drawable.ic_folder);
                     break;
-                case movie: mImage.setImageResource(R.drawable.ic_local_movies_black_48dp);
+                case movie: mImage.setImageResource(R.drawable.ic_movie);
                     break;
-                case music: mImage.setImageResource(R.drawable.ic_music_note_black_48dp);
+                case music: mImage.setImageResource(R.drawable.ic_music);
                     break;
                 default:
                     mImage.setImageResource(R.mipmap.ic_launcher);
