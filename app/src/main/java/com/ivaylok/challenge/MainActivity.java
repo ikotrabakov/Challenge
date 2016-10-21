@@ -43,18 +43,11 @@ public class MainActivity extends AppCompatActivity {
                 new RecyclerItemClickListener(getBaseContext(), mRecyclerView , new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        Log.d(TAG, "OnClick " + fileModels.get(position).getFilename());
 
                         if("folder".equals(fileModels.get(position).getFileTypeAsString())) {
-                            Log.d(TAG, "onClick type is folder");
 
                             NetworkAsyncTask asyncTask = new NetworkAsyncTask();
-                            asyncTask.execute(position);
-
-
-
-                            fileModels = controller.selectAllWhere(DatabaseHelper.FOLDER, "=", fileModels.get(position).getFilename());
-                            mAdapter.notifyDataSetChanged();
+                            asyncTask.execute(position);//
 
                         } else {
                             onClickOptionDialog();
