@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
@@ -26,6 +25,8 @@ public class AddActivity extends AppCompatActivity {
     private Switch mOrange, mBlue;
     private Button mAddFile;
 
+    FileController controller;
+
     private FileModel mModel;
     private CoordinatorLayout coordinatorLayout;
 
@@ -36,6 +37,7 @@ public class AddActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        controller = FileController.get(AddActivity.this);
         mModel = new FileModel();
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.addCoordinator);
 
@@ -53,7 +55,7 @@ public class AddActivity extends AppCompatActivity {
                     mModel.setFileType("image");
                 mModel.setFilename(mName.getText().toString());
                 mModel.setIsFolder(mFolder.getText().toString());
-                FileController.get(AddActivity.this).addFilesToDatabase(mModel);
+                controller.addFilesToDatabase(mModel);
                 startActivity(new Intent(AddActivity.this, MainActivity.class));
             }
         });
@@ -64,7 +66,7 @@ public class AddActivity extends AppCompatActivity {
 
     private void setDialog() {
 
-        List<FileModel> modelList = DatabaseHelper.getInstance(AddActivity.this).getAllData(DatabaseHelper.SELECT_ALL_FOLDERS_QUERY);
+        List<FileModel> modelList = DatabaseHelper.getInstance(AddActivity.this).getDataWithQuery(DatabaseHelper.SELECT_ALL_FOLDERS_QUERY);
         final List<String> folderList = new ArrayList<>();
         for (int i = 0; i < modelList.size(); i++) {
             folderList.add(modelList.get(i).getFilename());

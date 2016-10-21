@@ -20,20 +20,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "File.db";
     private static final String TABLE_NAME = "file_table";
 
-    private static final String _ID = "i_d";
-    private static final String NAME = "name";
-    private static final String FOLDER = "folder";
-    private static final String DATE = "date";
-    private static final String TYPE = "type";
-    private static final String ORANGE = "orange";
-    private static final String BLUE = "blue";
-    private static final String TAG = DatabaseHelper.class.getSimpleName();
+    public static final String _ID = "i_d";
+    public static final String NAME = "name";
+    public static final String FOLDER = "folder";
+    public static final String DATE = "date";
+    public static final String TYPE = "type";
+    public static final String ORANGE = "orange";
+    public static final String BLUE = "blue";
+    public static final String TAG = DatabaseHelper.class.getSimpleName();
 
     public static String ACTION_FOLDER = "";
 
-    public static final String SELECT_ALL_FOLDERS_QUERY = "SELECT * FROM " + TABLE_NAME + " WHERE " + TYPE + "='folder'";
-
     public static final String SELECT_ALL_DATA_QUERY = "SELECT * FROM " + TABLE_NAME;
+
+    public static final String SELECT_ALL_FOLDERS_QUERY = "SELECT * FROM " + TABLE_NAME + " WHERE " + TYPE + "='folder'";
 
     public static final String SELECT_ALL_FILES_IN_FOLDER = "SELECT * FROM " + TABLE_NAME + " WHERE " + FOLDER + "='" + ACTION_FOLDER+  "'";
 
@@ -102,7 +102,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public List<FileModel> getAllData(String query) {
+    public List<FileModel> getDataWithQuery(String query) {
 
         List<FileModel> modelList = new ArrayList<>();
 
@@ -123,7 +123,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     fileModel.setOrange(orange);
                     blue = cursor.getInt(cursor.getColumnIndex(BLUE)) > 0;
                     fileModel.setBlue(blue);
-                    Log.d(TAG, "getAllData: " + fileModel.toString());
+                    Log.d(TAG, "getDataWithQuery: " + fileModel.toString());
 
                     modelList.add(fileModel);
 
@@ -154,7 +154,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } finally {
             db.endTransaction();
         }
-
-
     }
+
+    public String selectAll() {
+        return SELECT_ALL_DATA_QUERY;
+    }
+
+
 }

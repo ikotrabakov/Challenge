@@ -1,7 +1,9 @@
 package com.ivaylok.challenge;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,14 +20,10 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    public static String CURRENT_QUERY = DatabaseHelper.SELECT_ALL_FILES_IN_FOLDER;
-
     private RecyclerView mRecyclerView;
     private FileAdapter mAdapter;
     private List<FileModel> fileModels;
     private FileController controller;
-
-    private DatabaseHelper mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,50 +34,31 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
         controller = FileController.get(getBaseContext());
 
-        fileModels = controller.getFiles(CURRENT_QUERY);
+        fileModels = controller.selectAllWhere(DatabaseHelper.FOLDER, "=", "");
 
         mAdapter = new FileAdapter(fileModels);
         mRecyclerView.setAdapter(mAdapter);
-        mDatabase = DatabaseHelper.getInstance(getApplicationContext());
 
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getBaseContext(), mRecyclerView , new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
+                        Log.d(TAG, "OnClick " + fileModels.get(position).getFilename());
 
-                        final Dialog dialog = new Dialog(MainActivity.this);
-                        dialog.setContentView(R.layout.dialog);
-                        dialog.setTitle("Actions");
-                        dialog.show();
+                        if("folder".equals(fileModels.get(position).getFileTypeAsString())) {
+                            Log.d(TAG, "onClick type is folder");
 
-                        TextView mFavorite = (TextView) dialog.findViewById(R.id.tvFavorite);
-                        TextView mPermalink = (TextView) dialog.findViewById(R.id.tvPermalink);
-                        TextView mDelete = (TextView) dialog.findViewById(R.id.tvDelete);
+                            NetworkAsyncTask asyncTask = new NetworkAsyncTask();
+                            asyncTask.execute(position);
 
-                        mFavorite.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Log.d("TAG", "You just clicked on Favorite");
-                                dialog.dismiss();
-                            }
-                        });
 
-                        mPermalink.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Log.d("TAG", "You just clicked on Permalink");
-                                dialog.dismiss();
-                            }
-                        });
 
-                        mDelete.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Log.d("TAG", "You just clicked on Delete");
-                                dialog.dismiss();
-                            }
-                        });
+                            fileModels = controller.selectAllWhere(DatabaseHelper.FOLDER, "=", fileModels.get(position).getFilename());
+                            mAdapter.notifyDataSetChanged();
 
+                        } else {
+                            onClickOptionDialog();
+                        }
                     }
 
                     @Override
@@ -90,11 +69,73 @@ public class MainActivity extends AppCompatActivity {
                 }));
     }
 
+    private class NetworkAsyncTask extends AsyncTask<Integer, Void,Void> {
+
+        ProgressDialog progressDialog;
+
+        @Override
+        protected Void doInBackground(Integer... params) {
+            int position = params[0];
+            fileModels = controller.selectAllWhere(DatabaseHelper.FOLDER, "=", fileModels.get(position).getFilename());
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = ProgressDialog.show(MainActivity.this, "Network request", "Wait for data to load");
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            progressDialog.dismiss();
+            mAdapter = new FileAdapter(fileModels);
+            mRecyclerView.setAdapter(mAdapter);
+        }
+    }
+
+    private void onClickOptionDialog() {
+
+        final Dialog dialog = new Dialog(MainActivity.this);
+        dialog.setContentView(R.layout.dialog);
+        dialog.setTitle("Actions");
+        dialog.show();
+
+        TextView mFavorite = (TextView) dialog.findViewById(R.id.tvFavorite);
+        TextView mPermalink = (TextView) dialog.findViewById(R.id.tvPermalink);
+        TextView mDelete = (TextView) dialog.findViewById(R.id.tvDelete);
+
+        mFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("TAG", "You just clicked on Favorite");
+                dialog.dismiss();
+            }
+        });
+
+        mPermalink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("TAG", "You just clicked on Permalink");
+                dialog.dismiss();
+            }
+        });
+
+        mDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("TAG", "You just clicked on Delete");
+                dialog.dismiss();
+            }
+        });
+
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        fileModels = controller.getFiles(CURRENT_QUERY);
-        mAdapter.notifyDataSetChanged();
+        mAdapter = new FileAdapter(fileModels);
         mRecyclerView.setAdapter(mAdapter);
     }
 

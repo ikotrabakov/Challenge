@@ -51,6 +51,10 @@ public class FileModel implements Serializable{
         return fileType;
     }
 
+    public String getFileTypeAsString() {
+        return String.valueOf(fileType);
+    }
+
     public boolean isOrange() {
         return isOrange;
     }
