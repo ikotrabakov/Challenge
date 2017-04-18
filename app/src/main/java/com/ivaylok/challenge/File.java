@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by smn on 10/19/16.
  */
 
-public class FileModel implements Serializable{
+public class File implements Serializable{
 
     private String filename;
     private String isFolder;
@@ -15,9 +15,9 @@ public class FileModel implements Serializable{
     private boolean isOrange;
     private boolean isBlue;
 
-    public FileModel(){};
+    public File(){};
 
-    public FileModel(String filename, String isFolder, String modDate, FileType fileType, boolean isOrange, boolean isBlue) {
+    public File(String filename, String isFolder, String modDate, FileType fileType, boolean isOrange, boolean isBlue) {
         this.filename = filename;
         this.isFolder = isFolder;
         this.fileType = fileType;
@@ -89,7 +89,7 @@ public class FileModel implements Serializable{
 
     @Override
     public String toString() {
-        return "FileModel{" +
+        return "File{" +
                 "filename='" + filename + '\'' +
                 ", isFolder='" + isFolder + '\'' +
                 ", modDate='" + modDate + '\'' +

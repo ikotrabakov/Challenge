@@ -77,19 +77,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void insertFile(FileModel fileModel) {
+    public void insertFile(File file) {
         SQLiteDatabase db = getWritableDatabase();
 
         db.beginTransaction();
 
         try {
             ContentValues values = new ContentValues();
-            values.put(NAME, fileModel.getFilename());
-            values.put(FOLDER, fileModel.getIsFolder());
-            values.put(DATE, fileModel.getModDate());
-            values.put(TYPE, fileModel.getFileType().toString());
-            values.put(ORANGE, fileModel.isOrange());
-            values.put(BLUE, fileModel.isBlue());
+            values.put(NAME, file.getFilename());
+            values.put(FOLDER, file.getIsFolder());
+            values.put(DATE, file.getModDate());
+            values.put(TYPE, file.getFileType().toString());
+            values.put(ORANGE, file.isOrange());
+            values.put(BLUE, file.isBlue());
 
             db.insertOrThrow(TABLE_NAME, null, values);
             db.setTransactionSuccessful();
@@ -102,9 +102,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public List<FileModel> getDataWithQuery(String query) {
+    public List<File> getDataWithQuery(String query) {
 
-        List<FileModel> modelList = new ArrayList<>();
+        List<File> modelList = new ArrayList<>();
 
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -114,18 +114,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 do {
                     boolean orange, blue;
 
-                    FileModel fileModel = new FileModel();
-                    fileModel.setFilename(cursor.getString(cursor.getColumnIndex(NAME)));
-                    fileModel.setIsFolder(cursor.getString(cursor.getColumnIndex(FOLDER)));
-                    fileModel.setModDate(cursor.getString(cursor.getColumnIndex(DATE)));
-                    fileModel.setFileType(cursor.getString(cursor.getColumnIndex(TYPE)));
+                    File file = new File();
+                    file.setFilename(cursor.getString(cursor.getColumnIndex(NAME)));
+                    file.setIsFolder(cursor.getString(cursor.getColumnIndex(FOLDER)));
+                    file.setModDate(cursor.getString(cursor.getColumnIndex(DATE)));
+                    file.setFileType(cursor.getString(cursor.getColumnIndex(TYPE)));
                     orange = cursor.getInt(cursor.getColumnIndex(ORANGE)) > 0;
-                    fileModel.setOrange(orange);
+                    file.setOrange(orange);
                     blue = cursor.getInt(cursor.getColumnIndex(BLUE)) > 0;
-                    fileModel.setBlue(blue);
-                    Log.d(TAG, "getDataWithQuery: " + fileModel.toString());
+                    file.setBlue(blue);
+                    Log.d(TAG, "getDataWithQuery: " + file.toString());
 
-                    modelList.add(fileModel);
+                    modelList.add(file);
 
                 } while (cursor.moveToNext());
             }

@@ -17,7 +17,7 @@ public class FileHolder extends RecyclerView.ViewHolder {
     private ImageView mImage;
     private TextView mTitle;
     private TextView mDesc;
-    private FileModel mFile;
+    private File mFile;
 
     private ImageView mTopColor;
     private ImageView mBottomColor;
@@ -32,9 +32,9 @@ public class FileHolder extends RecyclerView.ViewHolder {
 
     }
 
-    public void bindFile(FileModel fileModel)
+    public void bindFile(File file)
     {
-        mFile = fileModel;
+        mFile = file;
         if(mFile == null)
         {
             Log.d("TAG","Got a null file object");

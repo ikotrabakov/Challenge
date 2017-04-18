@@ -15,6 +15,8 @@ import android.widget.RadioButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.ivaylok.challenge.activities.FilesActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +29,7 @@ public class AddActivity extends AppCompatActivity {
 
     FileController controller;
 
-    private FileModel mModel;
+    private File mModel;
     private CoordinatorLayout coordinatorLayout;
 
     @Override
@@ -38,7 +40,7 @@ public class AddActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         controller = FileController.get(AddActivity.this);
-        mModel = new FileModel();
+        mModel = new File();
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.addCoordinator);
 
         mName = (TextView) findViewById(R.id.tvAddName);
@@ -56,7 +58,7 @@ public class AddActivity extends AppCompatActivity {
                 mModel.setFilename(mName.getText().toString());
                 mModel.setIsFolder(mFolder.getText().toString());
                 controller.addFilesToDatabase(mModel);
-                startActivity(new Intent(AddActivity.this, MainActivity.class));
+                startActivity(new Intent(AddActivity.this, FilesActivity.class));
             }
         });
 
@@ -66,7 +68,7 @@ public class AddActivity extends AppCompatActivity {
 
     private void setDialog() {
 
-        List<FileModel> modelList = DatabaseHelper.getInstance(AddActivity.this).getDataWithQuery(DatabaseHelper.SELECT_ALL_FOLDERS_QUERY);
+        List<File> modelList = DatabaseHelper.getInstance(AddActivity.this).getDataWithQuery(DatabaseHelper.SELECT_ALL_FOLDERS_QUERY);
         final List<String> folderList = new ArrayList<>();
         for (int i = 0; i < modelList.size(); i++) {
             folderList.add(modelList.get(i).getFilename());

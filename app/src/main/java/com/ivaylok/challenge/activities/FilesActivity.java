@@ -1,4 +1,4 @@
-package com.ivaylok.challenge;
+package com.ivaylok.challenge.activities;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -14,29 +14,42 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.ivaylok.challenge.AddActivity;
+import com.ivaylok.challenge.DatabaseHelper;
+import com.ivaylok.challenge.FileAdapter;
+import com.ivaylok.challenge.FileController;
+import com.ivaylok.challenge.File;
+import com.ivaylok.challenge.R;
+import com.ivaylok.challenge.RecyclerItemClickListener;
+import com.ivaylok.challenge.repositories.impl.DatabaseFilesRepository;
+
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class FilesActivity extends AppCompatActivity implements FilesActivityView{
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = FilesActivity.class.getSimpleName();
 
     private RecyclerView mRecyclerView;
     private FileAdapter mAdapter;
-    private List<FileModel> fileModels;
+    private List<File> files;
     private FileController controller;
+    private FilesActivityPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        presenter = new FilesActivityPresenter(this, new DatabaseFilesRepository(getApplicationContext()));
+        presenter.loadFiles();
+
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
         controller = FileController.get(getBaseContext());
 
-        fileModels = controller.selectAllWhere(DatabaseHelper.FOLDER, "=", "");
+        files = controller.selectAllWhere(DatabaseHelper.FOLDER, "=", "");
 
-        mAdapter = new FileAdapter(fileModels);
+        mAdapter = new FileAdapter(files);
         mRecyclerView.setAdapter(mAdapter);
 
         mRecyclerView.addOnItemTouchListener(
@@ -44,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(View view, int position) {
 
-                        if("folder".equals(fileModels.get(position).getFileTypeAsString())) {
+                        if("folder".equals(files.get(position).getFileTypeAsString())) {
 
                             NetworkAsyncTask asyncTask = new NetworkAsyncTask();
                             asyncTask.execute(position);//
@@ -62,6 +75,17 @@ public class MainActivity extends AppCompatActivity {
                 }));
     }
 
+    @Override
+    public void displayFiles(List<File> files) {
+
+    }
+
+    @Override
+    public void displayNoFiles() {
+
+    }
+
+
     private class NetworkAsyncTask extends AsyncTask<Integer, Void,Void> {
 
         ProgressDialog progressDialog;
@@ -69,28 +93,28 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Integer... params) {
             int position = params[0];
-            fileModels = controller.selectAllWhere(DatabaseHelper.FOLDER, "=", fileModels.get(position).getFilename());
+            files = controller.selectAllWhere(DatabaseHelper.FOLDER, "=", files.get(position).getFilename());
             return null;
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = ProgressDialog.show(MainActivity.this, "Network request", "Wait for data to load");
+            progressDialog = ProgressDialog.show(FilesActivity.this, "Network request", "Wait for data to load");
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             progressDialog.dismiss();
-            mAdapter = new FileAdapter(fileModels);
+            mAdapter = new FileAdapter(files);
             mRecyclerView.setAdapter(mAdapter);
         }
     }
 
     private void onClickOptionDialog() {
 
-        final Dialog dialog = new Dialog(MainActivity.this);
+        final Dialog dialog = new Dialog(FilesActivity.this);
         dialog.setContentView(R.layout.dialog);
         dialog.setTitle("Actions");
         dialog.show();
@@ -128,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mAdapter = new FileAdapter(fileModels);
+        mAdapter = new FileAdapter(files);
         mRecyclerView.setAdapter(mAdapter);
     }
 

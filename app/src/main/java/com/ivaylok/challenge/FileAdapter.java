@@ -12,11 +12,11 @@ import java.util.List;
  */
 
 public class FileAdapter extends RecyclerView.Adapter<FileHolder> {
-    private List<FileModel> modelList;
+    private List<File> modelList;
 
-    public FileAdapter (List<FileModel> fileModels)
+    public FileAdapter (List<File> files)
     {
-        modelList = fileModels;
+        modelList = files;
     }
 
     public FileHolder onCreateViewHolder( ViewGroup parent,
@@ -31,8 +31,8 @@ public class FileAdapter extends RecyclerView.Adapter<FileHolder> {
 
     public void onBindViewHolder(FileHolder holder ,int position)
     {
-        FileModel fileModel = modelList.get(position);
-        holder.bindFile(fileModel);
+        File file = modelList.get(position);
+        holder.bindFile(file);
     }
 
     @Override

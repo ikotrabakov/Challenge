@@ -16,7 +16,7 @@ import static com.ivaylok.challenge.DatabaseHelper.SELECT_ALL_DATA_QUERY;
 public class FileController {
 
     private static FileController sController;
-    private List<FileModel> mFiles;
+    private List<File> mFiles;
     private DatabaseHelper mDatabase;
 
     public static FileController get(Context context) {
@@ -32,14 +32,14 @@ public class FileController {
         mFiles = getFiles(SELECT_ALL_DATA_QUERY);
     }
 
-    public List<FileModel> getFiles(String query) { return mFiles = mDatabase.getDataWithQuery(query); }
+    public List<File> getFiles(String query) { return mFiles = mDatabase.getDataWithQuery(query); }
 
-    public List<FileModel> selectAllWhere(String columnName, String operator, String value) {
+    public List<File> selectAllWhere(String columnName, String operator, String value) {
          return mFiles = mDatabase.getDataWithQuery(DatabaseHelper.SELECT_ALL_DATA_QUERY + " WHERE " + columnName + " " + operator + "'" + value + "'");
     }
 
 
-    public void addFilesToDatabase(FileModel model) {
+    public void addFilesToDatabase(File model) {
 
         Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM dd, yyyy");
