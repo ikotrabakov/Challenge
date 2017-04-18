@@ -11,9 +11,11 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
+import io.reactivex.Single;
+
+import static java.util.Collections.EMPTY_LIST;
 import static org.mockito.Mockito.*;
 
 public class FilesActivityPresenterTest {
@@ -36,7 +38,7 @@ public class FilesActivityPresenterTest {
 
     @Test
     public void shouldPassFilesToView() {
-        when(filesRepository.getFiles()).thenReturn(MANY_FILES);
+        when(filesRepository.getFiles()).thenReturn(Single.just(MANY_FILES));
 
         presenter.loadFiles();
 
@@ -45,10 +47,12 @@ public class FilesActivityPresenterTest {
 
     @Test
     public void shouldHandleNoFilesFound() {
-        when(filesRepository.getFiles()).thenReturn(Collections.EMPTY_LIST);
+        when(filesRepository.getFiles()).thenReturn(Single.<List<File>>just(EMPTY_LIST));
 
         presenter.loadFiles();
 
         verify(view).displayNoFiles();
     }
+
+
 }

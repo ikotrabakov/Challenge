@@ -5,6 +5,8 @@ import com.ivaylok.challenge.repositories.FilesRepository;
 
 import java.util.List;
 
+import io.reactivex.functions.Consumer;
+
 /**
  * Created by smn on 4/14/17.
  */
@@ -20,11 +22,17 @@ class FilesActivityPresenter {
     }
 
     public void loadFiles() {
-        List<File> fileList = filesRepository.getFiles();
-        if(fileList.isEmpty()) {
-            view.displayNoFiles();
-        } else {
-            view.displayFiles(fileList);
-        }
+
+        filesRepository.getFiles()
+                .subscribe(new Consumer<List<File>>() {
+                    @Override
+                    public void accept(List<File> fileList) throws Exception {
+                        if(fileList.isEmpty()) {
+                            view.displayNoFiles();
+                        } else {
+                            view.displayFiles(fileList);
+                        }
+                    }
+                });
     }
 }

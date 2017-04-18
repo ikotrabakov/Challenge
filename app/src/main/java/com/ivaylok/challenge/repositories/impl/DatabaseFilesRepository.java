@@ -7,6 +7,9 @@ import com.ivaylok.challenge.File;
 import com.ivaylok.challenge.repositories.FilesRepository;
 
 import java.util.List;
+import java.util.concurrent.Callable;
+
+import io.reactivex.Single;
 
 import static com.ivaylok.challenge.DatabaseHelper.SELECT_ALL_DATA_QUERY;
 
@@ -23,7 +26,12 @@ public class DatabaseFilesRepository implements FilesRepository {
     }
 
     @Override
-    public List<File> getFiles() {
-        return databaseHelper.getDataWithQuery(SELECT_ALL_DATA_QUERY);
+    public Single<List<File>> getFiles() {
+        return Single.fromCallable(new Callable<List<File>>() {
+            @Override
+            public List<File> call() throws Exception {
+                return databaseHelper.getDataWithQuery(SELECT_ALL_DATA_QUERY);
+            }
+        });
     }
 }
